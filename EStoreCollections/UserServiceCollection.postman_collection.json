@@ -1,0 +1,2755 @@
+{
+	"info": {
+		"_postman_id": "7eb2969a-0c7c-45a8-8c49-160f2f3ea005",
+		"name": "UserServiceCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20631863"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Positive Tests",
+					"item": [
+						{
+							"name": "LoginAsAdmin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"token\", pm.response.text());"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"admin@gmail.com\",\r\n  \"password\": \"admiN1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://userservice-uat.azurewebsites.net/Authentication/Login",
+									"protocol": "https",
+									"host": [
+										"userservice-uat",
+										"azurewebsites",
+										"net"
+									],
+									"path": [
+										"Authentication",
+										"Login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login As Customer",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"CustomerToken\", pm.response.text());"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"abcd@abcd.abcd\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://userservice-uat.azurewebsites.net/Authentication/Login",
+									"protocol": "https",
+									"host": [
+										"userservice-uat",
+										"azurewebsites",
+										"net"
+									],
+									"path": [
+										"Authentication",
+										"Login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Negative Tests",
+					"item": []
+				}
+			]
+		},
+		{
+			"name": "User Management",
+			"item": [
+				{
+					"name": "Get User Status",
+					"item": [
+						{
+							"name": "Positive Tests",
+							"item": [
+								{
+									"name": "GetUserStatus",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://userservice-uat.azurewebsites.net/UserManagement/GetUserStatus?userId=11910",
+											"protocol": "https",
+											"host": [
+												"userservice-uat",
+												"azurewebsites",
+												"net"
+											],
+											"path": [
+												"UserManagement",
+												"GetUserStatus"
+											],
+											"query": [
+												{
+													"key": "userId",
+													"value": "11910"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"auth": {
+								"type": "bearer",
+								"bearer": [
+									{
+										"key": "token",
+										"value": "{{token}}",
+										"type": "string"
+									}
+								]
+							},
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Negative Tests",
+							"item": []
+						}
+					]
+				},
+				{
+					"name": "Set User Status",
+					"item": [
+						{
+							"name": "Positive Tests",
+							"item": [
+								{
+									"name": "SetUserStatusFalse",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://userservice-uat.azurewebsites.net/UserManagement/SetUserStatus?userId={{userId}}&newStatus=false",
+											"protocol": "https",
+											"host": [
+												"userservice-uat",
+												"azurewebsites",
+												"net"
+											],
+											"path": [
+												"UserManagement",
+												"SetUserStatus"
+											],
+											"query": [
+												{
+													"key": "userId",
+													"value": "{{userId}}"
+												},
+												{
+													"key": "newStatus",
+													"value": "false"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "SetUserStatusTrue",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://userservice-uat.azurewebsites.net/UserManagement/SetUserStatus?userId={{userId}}&newStatus=true",
+											"protocol": "https",
+											"host": [
+												"userservice-uat",
+												"azurewebsites",
+												"net"
+											],
+											"path": [
+												"UserManagement",
+												"SetUserStatus"
+											],
+											"query": [
+												{
+													"key": "userId",
+													"value": "{{userId}}"
+												},
+												{
+													"key": "newStatus",
+													"value": "true"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Negative Tests",
+							"item": []
+						}
+					]
+				},
+				{
+					"name": "Get User Info",
+					"item": [
+						{
+							"name": "Positive Tests",
+							"item": [
+								{
+									"name": "Get User Info",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://userservice-uat.azurewebsites.net/UserManagement/GetUserInfo?userId=13045",
+											"protocol": "https",
+											"host": [
+												"userservice-uat",
+												"azurewebsites",
+												"net"
+											],
+											"path": [
+												"UserManagement",
+												"GetUserInfo"
+											],
+											"query": [
+												{
+													"key": "userId",
+													"value": "13045"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Negative Tests",
+							"item": []
+						}
+					]
+				},
+				{
+					"name": "Get My User Info",
+					"item": [
+						{
+							"name": "Positive Tests",
+							"item": [
+								{
+									"name": "Get My User Info",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://userservice-uat.azurewebsites.net/UserManagement/GetMyUserInfo",
+											"protocol": "https",
+											"host": [
+												"userservice-uat",
+												"azurewebsites",
+												"net"
+											],
+											"path": [
+												"UserManagement",
+												"GetMyUserInfo"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Negative Tests",
+							"item": [
+								{
+									"name": "Get My User Info Without Token",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://userservice-uat.azurewebsites.net/UserManagement/GetUserInfo",
+											"protocol": "https",
+											"host": [
+												"userservice-uat",
+												"azurewebsites",
+												"net"
+											],
+											"path": [
+												"UserManagement",
+												"GetUserInfo"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Get All Users",
+					"item": [
+						{
+							"name": "Positive Tests",
+							"item": [
+								{
+									"name": "Get All Users",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"pageNumber\": 1,\r\n  \"filter\":\r\n  {\r\n      \"firstName\": \"Мет\",\r\n      \"lastName\": \"Том\"\r\n  }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://userservice-uat.azurewebsites.net/UserManagement/GetAllUsers",
+											"protocol": "https",
+											"host": [
+												"userservice-uat",
+												"azurewebsites",
+												"net"
+											],
+											"path": [
+												"UserManagement",
+												"GetAllUsers"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Negative Tests",
+							"item": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Register",
+			"item": [
+				{
+					"name": "Register Customer",
+					"item": [
+						{
+							"name": "Positive Tests",
+							"item": [
+								{
+									"name": "TC49_1_2 Register customer with valid credentials without birthdate",
+									"item": [
+										{
+											"name": "Register new customer without birthdate",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 200\", function () {\r",
+															"    pm.response.to.be.ok;\r",
+															"});\r",
+															"pm.test(\"Response body is an integer\", function () {\r",
+															"    var responseBody = Number(pm.response.text());\r",
+															"    pm.expect(responseBody).to.be.finite;\r",
+															"    pm.expect(responseBody % 1).to.equal(0);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													""
+												]
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.be.ok;",
+													"});",
+													"pm.test(\"Response body is an integer\", function () {",
+													"    var responseBody = Number(pm.response.text());",
+													"    pm.expect(responseBody).to.be.finite;",
+													"    pm.expect(responseBody % 1).to.equal(0);",
+													"});"
+												]
+											}
+										}
+									]
+								},
+								{
+									"name": "TC49_16 Register customer with valid credentials with birthdate",
+									"item": [
+										{
+											"name": "Register new customer without birthdate",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 200\", function () {\r",
+															"    pm.response.to.be.ok;\r",
+															"});\r",
+															"pm.test(\"Response body is an integer\", function () {\r",
+															"    var responseBody = Number(pm.response.text());\r",
+															"    pm.expect(responseBody).to.be.finite;\r",
+															"    pm.expect(responseBody % 1).to.equal(0);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Register new customer without birthdate Copy",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 200\", function () {\r",
+															"    pm.response.to.be.ok;\r",
+															"});\r",
+															"pm.test(\"Response body is an integer\", function () {\r",
+															"    var responseBody = Number(pm.response.text());\r",
+															"    pm.expect(responseBody).to.be.finite;\r",
+															"    pm.expect(responseBody % 1).to.equal(0);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Register new customer without birthdate Copy 2",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 200\", function () {\r",
+															"    pm.response.to.be.ok;\r",
+															"});\r",
+															"pm.test(\"Response body is an integer\", function () {\r",
+															"    var responseBody = Number(pm.response.text());\r",
+															"    pm.expect(responseBody).to.be.finite;\r",
+															"    pm.expect(responseBody % 1).to.equal(0);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Register new customer without birthdate Copy 3",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 200\", function () {\r",
+															"    pm.response.to.be.ok;\r",
+															"});\r",
+															"pm.test(\"Response body is an integer\", function () {\r",
+															"    var responseBody = Number(pm.response.text());\r",
+															"    pm.expect(responseBody).to.be.finite;\r",
+															"    pm.expect(responseBody % 1).to.equal(0);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Register new customer without birthdate Copy",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 200\", function () {\r",
+															"    pm.response.to.be.ok;\r",
+															"});\r",
+															"pm.test(\"Response body is an integer\", function () {\r",
+															"    var responseBody = Number(pm.response.text());\r",
+															"    pm.expect(responseBody).to.be.finite;\r",
+															"    pm.expect(responseBody % 1).to.equal(0);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													""
+												]
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.be.ok;",
+													"});",
+													"pm.test(\"Response body is an integer\", function () {",
+													"    var responseBody = Number(pm.response.text());",
+													"    pm.expect(responseBody).to.be.finite;",
+													"    pm.expect(responseBody % 1).to.equal(0);",
+													"});"
+												]
+											}
+										}
+									]
+								},
+								{
+									"name": "TC111_3_4 Register valid customer JWT Token returns in header",
+									"item": [
+										{
+											"name": "Register new customer without birthdate",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													""
+												]
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													"function decodeJwt(token) {",
+													"    var base64Url = token.split('.')[1];",
+													"    var base64 = base64Url.replace('-', '+').replace('_', '/');",
+													"    return JSON.parse(atob(base64));",
+													"}",
+													"",
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.be.ok;",
+													"});",
+													"",
+													"var authorizationHeader = pm.response.headers.get(\"Authorization\");",
+													"",
+													"pm.test(\"Authorization header is present\", function () {",
+													"    pm.expect(authorizationHeader).to.exist;",
+													"});",
+													"",
+													"var decodedToken;",
+													"try {",
+													"    decodedToken = decodeJwt(authorizationHeader);",
+													"} catch (error) {",
+													"    console.error(\"Error decoding JWT token:\", error.message);",
+													"}",
+													"",
+													"var requestBody = JSON.parse(pm.request.body);",
+													"",
+													"pm.test(\"JWT token contains information matches with created customer data\", function () {",
+													"    pm.expect(decodedToken.Email).to.equal(requestBody.email);",
+													"    pm.expect(decodedToken.role).to.equal('Customer');",
+													"    pm.expect(decodedToken.FirstName).to.equal(requestBody.firstName);",
+													"    pm.expect(decodedToken.LastName).to.equal(requestBody.lastName);",
+													"});"
+												]
+											}
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "Negative Tests",
+							"item": [
+								{
+									"name": "TC49_19 Register customer with email which exists in db",
+									"item": [
+										{
+											"name": "Register new customer",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"var requestBody = JSON.parse(pm.request.body);\r",
+															"pm.variables.set(\"generatedEmail\", requestBody.email);\r",
+															"pm.test(\"Status code is 200\", function () {\r",
+															"    pm.response.to.be.ok;\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"test_Customer10\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Register customer with existin email in db",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 409\", function () {\r",
+															"    pm.response.to.have.status(409);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"test_Customer10\",\r\n  \"email\": \"{{generatedEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													""
+												]
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													""
+												]
+											}
+										}
+									]
+								},
+								{
+									"name": "TC49_8a Register customer with invalid first name",
+									"item": [
+										{
+											"name": "First name is empty string",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{emptyString}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"test_Customer10\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "First name is long string",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{longString}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"test_Customer10\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													""
+												]
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {",
+													"    pm.response.to.be.badRequest;",
+													"});",
+													"pm.test(\"The field FirstName must be a string with a minimum length of 1 and a maximum length of 200.'\", function () {",
+													"    var responseBody = pm.response.json();",
+													"    var errorMessage = responseBody.errors.FirstName[0];",
+													"    pm.expect(errorMessage).to.include(\"The field FirstName must be a string with a minimum length of 1 and a maximum length of 200.\");",
+													"});"
+												]
+											}
+										}
+									]
+								},
+								{
+									"name": "TC49_8b Register customer with invalid first name",
+									"item": [
+										{
+											"name": "First name is null",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": null,\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"test_Customer10\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "First name is not provided",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"test_Customer10\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													""
+												]
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {",
+													"    pm.response.to.be.badRequest;",
+													"});",
+													"pm.test(\"The FirstName field is required.'\", function () {",
+													"    var responseBody = pm.response.json();",
+													"    var errorMessage = responseBody.errors.FirstName[0];",
+													"    pm.expect(errorMessage).to.include(\"The FirstName field is required.\");",
+													"});"
+												]
+											}
+										}
+									]
+								},
+								{
+									"name": "TC49_9a Register customer with invalid last name",
+									"item": [
+										{
+											"name": "Last name is empty string",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 400\", function () {\r",
+															"    pm.response.to.be.badRequest;\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomLastName}}\",\r\n  \"lastName\": \"{{emptyString}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"test_Customer10\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Last name is long string",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomLastName}}\",\r\n  \"lastName\": \"{{longString}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"test_Customer10\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													""
+												]
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {",
+													"    pm.response.to.be.badRequest;",
+													"});",
+													"pm.test(\"The field LastName must be a string with a minimum length of 1 and a maximum length of 200.'\", function () {",
+													"    var responseBody = pm.response.json();",
+													"    var errorMessage = responseBody.errors.LastName[0];",
+													"    pm.expect(errorMessage).to.include(\"The field LastName must be a string with a minimum length of 1 and a maximum length of 200.\");",
+													"});"
+												]
+											}
+										}
+									]
+								},
+								{
+									"name": "TC49_9b Register customer with invalid last name",
+									"item": [
+										{
+											"name": "Last name is null",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomLastName}}\",\r\n  \"lastName\": null,\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"test_Customer10\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Last name is not provided",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"test_Customer10\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													""
+												]
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {",
+													"    pm.response.to.be.badRequest;",
+													"});",
+													"pm.test(\"The LastName field is required.'\", function () {",
+													"    var responseBody = pm.response.json();",
+													"    var errorMessage = responseBody.errors.LastName[0];",
+													"    pm.expect(errorMessage).to.include(\"The LastName field is required.\");",
+													"});"
+												]
+											}
+										}
+									]
+								},
+								{
+									"name": "TC49_12a Registe customer with invalid password",
+									"item": [
+										{
+											"name": "Less than 4 characters",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"Qq1\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Without lowwer case",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"QQ123\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Without upper case",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"qq123\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Without digits",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"qqQQwE\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "More than 32 characters",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"Gqo78PyyKsz9rqiR1SgmM7bVMbxGwwJIM\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													""
+												]
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {",
+													"    pm.response.to.be.badRequest;",
+													"});",
+													"pm.test(\"Check if response contains the error message: 'Password must be at least 4 characters, no more than 32 characters, and must include at least one upper case letter, one lower case letter, and one numeric digit.'\", function () {",
+													"    var responseBody = pm.response.json();",
+													"    var errorMessage = responseBody.errors.Password[0];",
+													"    pm.expect(errorMessage).to.include(\"Password must be at least 4 characters, no more than 32 characters, and must include at least one upper case letter, one lower case letter, and one numeric digit.\");",
+													"});"
+												]
+											}
+										}
+									]
+								},
+								{
+									"name": "TC49_12b Registe customer with invalid password Copy",
+									"item": [
+										{
+											"name": "Password is empty string",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"{{emptyString}}\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Password is null",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": null,\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Password is not provided",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													""
+												]
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {",
+													"    pm.response.to.be.badRequest;",
+													"});",
+													"pm.test(\"Check if response contains the error message: 'Password is required.'\", function () {",
+													"    var responseBody = pm.response.json();",
+													"    var errorMessage = responseBody.errors.Password[0];",
+													"    pm.expect(errorMessage).to.include(\"Password is required.\");",
+													"});"
+												]
+											}
+										}
+									]
+								},
+								{
+									"name": "TC49_13a Register customer with invalid email",
+									"item": [
+										{
+											"name": "Email  is @example.com",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"test_Customer10\",\r\n  \"email\": \"@example.com\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Email  is user@.com",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"test_Customer10\",\r\n  \"email\": \"user@.com\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Email  is user@@example.com",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"test_Customer10\",\r\n  \"email\": \"user@@example.com\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Email  is user@example.c",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"test_Customer10\",\r\n  \"email\": \"user@example.c\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Email  is user@example..co",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"test_Customer10\",\r\n  \"email\": \"user@example..co\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Email  is user@.example.com",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"test_Customer10\",\r\n  \"email\": \"user@.example.com\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Email  is user@example",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"test_Customer10\",\r\n  \"email\": \"user@example\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Email  is user.com",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"test_Customer10\",\r\n  \"email\": \"user.com\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													""
+												]
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {",
+													"    pm.response.to.be.badRequest;",
+													"});",
+													"pm.test(\"Response contains message: 'Invalid email format.'\", function () {",
+													"    var responseBody = pm.response.json();",
+													"    var errorMessage = responseBody.errors.Email[0];",
+													"    pm.expect(errorMessage).to.include(\"Invalid email format.\");",
+													"});"
+												]
+											}
+										}
+									]
+								},
+								{
+									"name": "TC49_13b Register customer with invalid email",
+									"item": [
+										{
+											"name": "Email is not provided",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"test_Customer10\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Email  is null",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"test_Customer10\",\r\n  \"email\": null\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Email  is empty string",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"test_Customer10\",\r\n  \"email\": \"{{emptyString}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													""
+												]
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {",
+													"    pm.response.to.be.badRequest;",
+													"});",
+													"pm.test(\"Response contains message: 'Email is required.'\", function () {",
+													"    var responseBody = pm.response.json();",
+													"    var errorMessage = responseBody.errors.Email[0];",
+													"    pm.expect(errorMessage).to.include(\"Email is required.\");",
+													"});"
+												]
+											}
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Register Admin",
+					"item": [
+						{
+							"name": "Positive Tests",
+							"item": [
+								{
+									"name": "RegisterAdmin",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"password\": \"1qWe\",\r\n  \"email\": \"   test_admin56811@gmail.com\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterAdmin",
+											"protocol": "https",
+											"host": [
+												"userservice-uat",
+												"azurewebsites",
+												"net"
+											],
+											"path": [
+												"Register",
+												"RegisterAdmin"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Negative Tests",
+							"item": []
+						}
+					]
+				},
+				{
+					"name": "Delete User",
+					"item": [
+						{
+							"name": "Positive Tests",
+							"item": [
+								{
+									"name": "DeleteUser",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://userservice-uat.azurewebsites.net/Register/DeleteUser?userId=2147483648",
+											"protocol": "https",
+											"host": [
+												"userservice-uat",
+												"azurewebsites",
+												"net"
+											],
+											"path": [
+												"Register",
+												"DeleteUser"
+											],
+											"query": [
+												{
+													"key": "userId",
+													"value": "2147483648"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Negative Tests",
+							"item": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
