@@ -13,92 +13,148 @@
 					"name": "Positive Tests",
 					"item": [
 						{
-							"name": "LoginAsAdmin",
-							"event": [
+							"name": "Login as admin",
+							"item": [
 								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.environment.set(\"token\", pm.response.text());"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "",
-										"value": "",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n  \"email\": \"admin@gmail.com\",\r\n  \"password\": \"admiN1\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
+									"name": "LoginAsAdmin",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.environment.set(\"token\", pm.response.text());"
+												],
+												"type": "text/javascript"
+											}
 										}
-									}
-								},
-								"url": {
-									"raw": "https://userservice-uat.azurewebsites.net/Authentication/Login",
-									"protocol": "https",
-									"host": [
-										"userservice-uat",
-										"azurewebsites",
-										"net"
 									],
-									"path": [
-										"Authentication",
-										"Login"
-									]
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "",
+												"value": "",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"email\": \"admin@gmail.com\",\r\n  \"password\": \"admiN1\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://userservice-uat.azurewebsites.net/Authentication/Login",
+											"protocol": "https",
+											"host": [
+												"userservice-uat",
+												"azurewebsites",
+												"net"
+											],
+											"path": [
+												"Authentication",
+												"Login"
+											]
+										}
+									},
+									"response": []
 								}
-							},
-							"response": []
+							]
 						},
 						{
-							"name": "Login As Customer",
-							"event": [
+							"name": "Login as a customer",
+							"item": [
 								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.environment.set(\"CustomerToken\", pm.response.text());"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"abcd@abcd.abcd\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
+									"name": "1 Create new customer",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.be.ok;\r",
+													"});\r",
+													"pm.environment.set(\"customerEmail\", pm.request.body.email);"
+												],
+												"type": "text/javascript"
+											}
 										}
-									}
-								},
-								"url": {
-									"raw": "https://userservice-uat.azurewebsites.net/Authentication/Login",
-									"protocol": "https",
-									"host": [
-										"userservice-uat",
-										"azurewebsites",
-										"net"
 									],
-									"path": [
-										"Authentication",
-										"Login"
-									]
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2012\",\r\n  \"password\": \"{{customerPassword}}\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+											"protocol": "https",
+											"host": [
+												"userservice-uat",
+												"azurewebsites",
+												"net"
+											],
+											"path": [
+												"Register",
+												"RegisterCustomer"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "2 Login with valid credentials",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.be.ok;\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"password\": \"{{customerPassword}}\",\r\n  \"email\": \"{{customerEmail}}\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://userservice-uat.azurewebsites.net/Authentication/Login",
+											"protocol": "https",
+											"host": [
+												"userservice-uat",
+												"azurewebsites",
+												"net"
+											],
+											"path": [
+												"Authentication",
+												"Login"
+											]
+										}
+									},
+									"response": []
 								}
-							},
-							"response": []
+							]
 						}
 					]
 				},
@@ -546,23 +602,35 @@
 									]
 								},
 								{
-									"name": "TC49_16 Register customer with valid credentials with birthdate",
+									"name": "TC49_16 Register valid customer with birthdate",
 									"item": [
 										{
-											"name": "Register new customer without birthdate",
+											"name": "Birthday format dd.MM.yyyy value 130 years + 1 day",
 											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"var currentDate = new Date();\r",
+															"var birthDate = new Date();\r",
+															"birthDate.setFullYear(currentDate.getFullYear() - 130);\r",
+															"birthDate.setDate(currentDate.getDate() + 1);\r",
+															"\r",
+															"var formattedBirthDate = (\"0\" + birthDate.getDate()).slice(-2) + \r",
+															"    \".\" + (\"0\" + (birthDate.getMonth() + 1)).slice(-2) + \r",
+															"    \".\" + birthDate.getFullYear();\r",
+															"\r",
+															"pm.variables.set(\"formattedBirthDate\", formattedBirthDate);\r",
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
 												{
 													"listen": "test",
 													"script": {
 														"exec": [
-															"pm.test(\"Status code is 200\", function () {\r",
-															"    pm.response.to.be.ok;\r",
-															"});\r",
-															"pm.test(\"Response body is an integer\", function () {\r",
-															"    var responseBody = Number(pm.response.text());\r",
-															"    pm.expect(responseBody).to.be.finite;\r",
-															"    pm.expect(responseBody % 1).to.equal(0);\r",
-															"});"
+															""
 														],
 														"type": "text/javascript"
 													}
@@ -573,7 +641,7 @@
 												"header": [],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"{{formattedBirthDate}}\",\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -597,20 +665,32 @@
 											"response": []
 										},
 										{
-											"name": "Register new customer without birthdate Copy",
+											"name": "Birthday format dd.MM.yyyy value 5 years - 1 day",
 											"event": [
 												{
 													"listen": "test",
 													"script": {
 														"exec": [
-															"pm.test(\"Status code is 200\", function () {\r",
-															"    pm.response.to.be.ok;\r",
-															"});\r",
-															"pm.test(\"Response body is an integer\", function () {\r",
-															"    var responseBody = Number(pm.response.text());\r",
-															"    pm.expect(responseBody).to.be.finite;\r",
-															"    pm.expect(responseBody % 1).to.equal(0);\r",
-															"});"
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"var currentDate = new Date();\r",
+															"var birthDate = new Date();\r",
+															"birthDate.setFullYear(currentDate.getFullYear() - 5);\r",
+															"birthDate.setDate(currentDate.getDate() - 1);\r",
+															"\r",
+															"var formattedBirthDate = (\"0\" + birthDate.getDate()).slice(-2) + \r",
+															"    \".\" + (\"0\" + (birthDate.getMonth() + 1)).slice(-2) + \r",
+															"    \".\" + birthDate.getFullYear();\r",
+															"\r",
+															"pm.variables.set(\"formattedBirthDate\", formattedBirthDate);\r",
+															""
 														],
 														"type": "text/javascript"
 													}
@@ -621,7 +701,7 @@
 												"header": [],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"{{formattedBirthDate}}\",\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -645,20 +725,31 @@
 											"response": []
 										},
 										{
-											"name": "Register new customer without birthdate Copy 2",
+											"name": "Birthday format MM/dd/yyyy value 130 years + 1 day",
 											"event": [
 												{
 													"listen": "test",
 													"script": {
 														"exec": [
-															"pm.test(\"Status code is 200\", function () {\r",
-															"    pm.response.to.be.ok;\r",
-															"});\r",
-															"pm.test(\"Response body is an integer\", function () {\r",
-															"    var responseBody = Number(pm.response.text());\r",
-															"    pm.expect(responseBody).to.be.finite;\r",
-															"    pm.expect(responseBody % 1).to.equal(0);\r",
-															"});"
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"var currentDate = new Date();\r",
+															"var birthDate = new Date();\r",
+															"birthDate.setFullYear(currentDate.getFullYear() - 130);\r",
+															"birthDate.setDate(currentDate.getDate() + 1);\r",
+															"\r",
+															"var formattedBirthDate = (\"0\" + (birthDate.getMonth() + 1)).slice(-2) + \"/\" + \r",
+															"    (\"0\" + birthDate.getDate()).slice(-2) + \"/\" + birthDate.getFullYear();\r",
+															"\r",
+															"pm.variables.set(\"formattedBirthDate\", formattedBirthDate);\r",
+															""
 														],
 														"type": "text/javascript"
 													}
@@ -669,7 +760,7 @@
 												"header": [],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"{{formattedBirthDate}}\",\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -693,68 +784,30 @@
 											"response": []
 										},
 										{
-											"name": "Register new customer without birthdate Copy 3",
+											"name": "Birthday format MM/dd/yyyy value 5 years - 1 day",
 											"event": [
 												{
 													"listen": "test",
 													"script": {
 														"exec": [
-															"pm.test(\"Status code is 200\", function () {\r",
-															"    pm.response.to.be.ok;\r",
-															"});\r",
-															"pm.test(\"Response body is an integer\", function () {\r",
-															"    var responseBody = Number(pm.response.text());\r",
-															"    pm.expect(responseBody).to.be.finite;\r",
-															"    pm.expect(responseBody % 1).to.equal(0);\r",
-															"});"
+															""
 														],
 														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"method": "POST",
-												"header": [],
-												"body": {
-													"mode": "raw",
-													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
-													"options": {
-														"raw": {
-															"language": "json"
-														}
 													}
 												},
-												"url": {
-													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
-													"protocol": "https",
-													"host": [
-														"userservice-uat",
-														"azurewebsites",
-														"net"
-													],
-													"path": [
-														"Register",
-														"RegisterCustomer"
-													]
-												}
-											},
-											"response": []
-										},
-										{
-											"name": "Register new customer without birthdate Copy",
-											"event": [
 												{
-													"listen": "test",
+													"listen": "prerequest",
 													"script": {
 														"exec": [
-															"pm.test(\"Status code is 200\", function () {\r",
-															"    pm.response.to.be.ok;\r",
-															"});\r",
-															"pm.test(\"Response body is an integer\", function () {\r",
-															"    var responseBody = Number(pm.response.text());\r",
-															"    pm.expect(responseBody).to.be.finite;\r",
-															"    pm.expect(responseBody % 1).to.equal(0);\r",
-															"});"
+															"var currentDate = new Date();\r",
+															"var birthDate = new Date();\r",
+															"birthDate.setFullYear(currentDate.getFullYear() - 5);\r",
+															"birthDate.setDate(currentDate.getDate() - 1);\r",
+															"\r",
+															"var formattedBirthDate = (\"0\" + (birthDate.getMonth() + 1)).slice(-2) + \"/\" + \r",
+															"    (\"0\" + birthDate.getDate()).slice(-2) + \"/\" + birthDate.getFullYear();\r",
+															"\r",
+															"pm.variables.set(\"formattedBirthDate\", formattedBirthDate);"
 														],
 														"type": "text/javascript"
 													}
@@ -765,7 +818,7 @@
 												"header": [],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"{{formattedBirthDate}}\",\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -811,7 +864,8 @@
 													"    var responseBody = Number(pm.response.text());",
 													"    pm.expect(responseBody).to.be.finite;",
 													"    pm.expect(responseBody % 1).to.equal(0);",
-													"});"
+													"});",
+													"pm.variables.unset(\"formattedBirthDate\");"
 												]
 											}
 										}
@@ -919,6 +973,277 @@
 							"name": "Negative Tests",
 							"item": [
 								{
+									"name": "TC49_11 Register valid customer with invalid birthdate",
+									"item": [
+										{
+											"name": "Birthday format dd.MM.yyyy value 130 years - 1 day",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"var currentDate = new Date();\r",
+															"var birthDate = new Date();\r",
+															"birthDate.setFullYear(currentDate.getFullYear() - 130);\r",
+															"birthDate.setDate(currentDate.getDate() - 1);\r",
+															"\r",
+															"var formattedBirthDate = (\"0\" + birthDate.getDate()).slice(-2) + \r",
+															"    \".\" + (\"0\" + (birthDate.getMonth() + 1)).slice(-2) + \r",
+															"    \".\" + birthDate.getFullYear();\r",
+															"\r",
+															"pm.variables.set(\"formattedBirthDate\", formattedBirthDate);\r",
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"{{formattedBirthDate}}\",\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Birthday format dd.MM.yyyy value 5 years + 1 day",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"var currentDate = new Date();\r",
+															"var birthDate = new Date();\r",
+															"birthDate.setFullYear(currentDate.getFullYear() - 5);\r",
+															"birthDate.setDate(currentDate.getDate() + 1);\r",
+															"\r",
+															"var formattedBirthDate = (\"0\" + birthDate.getDate()).slice(-2) + \r",
+															"    \".\" + (\"0\" + (birthDate.getMonth() + 1)).slice(-2) + \r",
+															"    \".\" + birthDate.getFullYear();\r",
+															"\r",
+															"pm.variables.set(\"formattedBirthDate\", formattedBirthDate);\r",
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"{{formattedBirthDate}}\",\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Birthday format MM/dd/yyyy value 130 years - 1 day",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"var currentDate = new Date();\r",
+															"var birthDate = new Date();\r",
+															"birthDate.setFullYear(currentDate.getFullYear() - 130);\r",
+															"birthDate.setDate(currentDate.getDate() - 1);\r",
+															"\r",
+															"var formattedBirthDate = (\"0\" + (birthDate.getMonth() + 1)).slice(-2) + \"/\" + \r",
+															"    (\"0\" + birthDate.getDate()).slice(-2) + \"/\" + birthDate.getFullYear();\r",
+															"\r",
+															"pm.variables.set(\"formattedBirthDate\", formattedBirthDate);"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"{{formattedBirthDate}}\",\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Birthday format MM/dd/yyyy value 5 years + 1 day",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"var currentDate = new Date();\r",
+															"var birthDate = new Date();\r",
+															"birthDate.setFullYear(currentDate.getFullYear() - 5);\r",
+															"birthDate.setDate(currentDate.getDate() + 1);\r",
+															"\r",
+															"var formattedBirthDate = (\"0\" + (birthDate.getMonth() + 1)).slice(-2) + \"/\" + \r",
+															"    (\"0\" + birthDate.getDate()).slice(-2) + \"/\" + birthDate.getFullYear();\r",
+															"\r",
+															"pm.variables.set(\"formattedBirthDate\", formattedBirthDate);"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"{{formattedBirthDate}}\",\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													""
+												]
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {",
+													"    pm.response.to.be.badRequest;",
+													"});",
+													"",
+													"pm.test(\"Error message is 'Please enter a date of birth within the range of 5 to 130 years'\", function () {    ",
+													"    var responseBody = pm.response.text();",
+													"    var expectedErrorMessage = \"Please enter a date of birth within the range of 5 to 130 years\";",
+													"    pm.expect(responseBody).to.equal(expectedErrorMessage);",
+													"});",
+													"",
+													"pm.variables.unset(\"formattedBirthDate\");"
+												]
+											}
+										}
+									]
+								},
+								{
 									"name": "TC49_19 Register customer with email which exists in db",
 									"item": [
 										{
@@ -984,7 +1309,8 @@
 														"exec": [
 															"pm.test(\"Status code is 409\", function () {\r",
 															"    pm.response.to.have.status(409);\r",
-															"});"
+															"});\r",
+															"pm.variables.unset;"
 														],
 														"type": "text/javascript"
 													}
