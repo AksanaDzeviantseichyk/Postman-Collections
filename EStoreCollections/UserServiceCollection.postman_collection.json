@@ -1277,7 +1277,7 @@
 												"header": [],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"test_Customer10\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -1301,7 +1301,7 @@
 											"response": []
 										},
 										{
-											"name": "2. Register customer with existin email in db",
+											"name": "2. Register customer with existing email in db",
 											"event": [
 												{
 													"listen": "test",
@@ -1309,6 +1309,11 @@
 														"exec": [
 															"pm.test(\"Status code is 409\", function () {\r",
 															"    pm.response.to.have.status(409);\r",
+															"});\r",
+															"pm.test(\"Error message is 'Ambiguous match found.'\", function () {    \r",
+															"    var responseBody = pm.response.text();\r",
+															"    var expectedErrorMessage = \"Ambiguous match found.\";\r",
+															"    pm.expect(responseBody).to.equal(expectedErrorMessage);\r",
 															"});\r",
 															"pm.variables.unset;"
 														],
@@ -1321,7 +1326,7 @@
 												"header": [],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"test_Customer10\",\r\n  \"email\": \"{{generatedEmail}}\"\r\n}",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"{{generatedEmail}}\"\r\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -2988,7 +2993,57 @@
 									"name": "TC53_1 Register customer with valid credentials and token",
 									"item": [
 										{
-											"name": "Register new customer without birthdate",
+											"name": "1. Get valid admin token",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 200\", function () {\r",
+															"    pm.response.to.be.ok;\r",
+															"});\r",
+															"pm.environment.set(\"adminToken\", pm.response.text());"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "",
+														"value": "",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"email\": \"{{adminEmail}}\",\r\n  \"password\": \"{{adminPassword}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Authentication/Login",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Authentication",
+														"Login"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "2. Register new admin with valid data and token",
 											"event": [
 												{
 													"listen": "test",
@@ -3002,6 +3057,341 @@
 															"    pm.expect(responseBody).to.be.finite;\r",
 															"    pm.expect(responseBody % 1).to.equal(0);\r",
 															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{adminToken}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"qweR1\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterAdmin",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterAdmin"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													""
+												]
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													""
+												]
+											}
+										}
+									]
+								},
+								{
+									"name": "TC111_1_2 Register valid admin JWT Token returns in header",
+									"item": [
+										{
+											"name": "1. Get valid admin token",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 200\", function () {\r",
+															"    pm.response.to.be.ok;\r",
+															"});\r",
+															"pm.environment.set(\"adminToken\", pm.response.text());"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "",
+														"value": "",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"email\": \"{{adminEmail}}\",\r\n  \"password\": \"{{adminPassword}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Authentication/Login",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Authentication",
+														"Login"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "2. Register new admin with valid data and token",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"function decodeJwt(token) {\r",
+															"    var base64Url = token.split('.')[1];\r",
+															"    var base64 = base64Url.replace('-', '+').replace('_', '/');\r",
+															"    return JSON.parse(atob(base64));\r",
+															"}\r",
+															"\r",
+															"pm.test(\"Status code is 200\", function () {\r",
+															"    pm.response.to.be.ok;\r",
+															"});\r",
+															"\r",
+															"var authorizationHeader = pm.response.headers.get(\"Authorization\");\r",
+															"\r",
+															"pm.test(\"Authorization header is present\", function () {\r",
+															"    pm.expect(authorizationHeader).to.exist;\r",
+															"});\r",
+															"\r",
+															"var decodedToken;\r",
+															"try {\r",
+															"    decodedToken = decodeJwt(authorizationHeader);\r",
+															"} catch (error) {\r",
+															"    console.error(\"Error decoding JWT token:\", error.message);\r",
+															"}\r",
+															"\r",
+															"var requestBody = JSON.parse(pm.request.body);\r",
+															"\r",
+															"pm.test(\"JWT token contains information matches with created customer data\", function () {\r",
+															"    pm.expect(decodedToken.Id).to.equal(pm.response.text());\r",
+															"    pm.expect(decodedToken.Email).to.equal(requestBody.email);\r",
+															"    pm.expect(decodedToken.role).to.equal('Admin');    \r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{adminToken}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"qweR1\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterAdmin",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterAdmin"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													""
+												]
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													""
+												]
+											}
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "Negative Tests",
+							"item": [
+								{
+									"name": "TC53_2 Register admin with valid data and withot admin token in header",
+									"item": [
+										{
+											"name": "1. Register new admin with valid data and without admin token",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 401\", function () {\r",
+															"    pm.response.to.be.unauthorized;\r",
+															"});\r",
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"qweR1\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterAdmin",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterAdmin"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "TC53_3 Register admin with valid data and incorrect admin token in header",
+									"item": [
+										{
+											"name": "1. Register new admin with valid data and incorrect admin token",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 401\", function () {\r",
+															"    pm.response.to.be.unauthorized;\r",
+															"});\r",
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{wrongToken}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"qweR1\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterAdmin",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterAdmin"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "TC53_4 Register admin with valid data and customer token in header",
+									"item": [
+										{
+											"name": "1. Get valid customer token",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 200\", function () {\r",
+															"    pm.response.to.be.ok;\r",
+															"});\r",
+															"pm.environment.set(\"customerToken\", pm.response.headers.get(\"Authorization\"));"
 														],
 														"type": "text/javascript"
 													}
@@ -3034,6 +3424,166 @@
 												}
 											},
 											"response": []
+										},
+										{
+											"name": "2. Register new admin with valid data and customer token",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 403\", function () {\r",
+															"    pm.response.to.be.forbidden;\r",
+															"});\r",
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{customerToken}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"qweR1\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterAdmin",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterAdmin"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "TC53_7 Register admin with email which exists in db",
+									"item": [
+										{
+											"name": "1. Get valid admin token",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 200\", function () {\r",
+															"    pm.response.to.be.ok;\r",
+															"});\r",
+															"pm.environment.set(\"adminToken\", pm.response.text());"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "",
+														"value": "",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"email\": \"{{adminEmail}}\",\r\n  \"password\": \"{{adminPassword}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Authentication/Login",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Authentication",
+														"Login"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "2. Register admin with existing email in db",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 409\", function () {\r",
+															"    pm.response.to.have.status(409);\r",
+															"});\r",
+															"pm.test(\"Error message is 'Ambiguous match found.'\", function () {    \r",
+															"    var responseBody = pm.response.text();\r",
+															"    var expectedErrorMessage = \"Ambiguous match found.\";\r",
+															"    pm.expect(responseBody).to.equal(expectedErrorMessage);\r",
+															"});\r",
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{adminToken}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"{{adminEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterAdmin",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterAdmin"
+													]
+												}
+											},
+											"response": []
 										}
 									],
 									"event": [
@@ -3051,60 +3601,13 @@
 											"script": {
 												"type": "text/javascript",
 												"exec": [
-													"pm.test(\"Status code is 200\", function () {",
-													"    pm.response.to.be.ok;",
-													"});",
-													"pm.test(\"Response body is an integer\", function () {",
-													"    var responseBody = Number(pm.response.text());",
-													"    pm.expect(responseBody).to.be.finite;",
-													"    pm.expect(responseBody % 1).to.equal(0);",
-													"});"
+													""
 												]
 											}
 										}
 									]
-								},
-								{
-									"name": "RegisterAdmin",
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Authorization",
-												"value": "Bearer {{token}}",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n  \"password\": \"1qWe\",\r\n  \"email\": \"   test_admin56811@gmail.com\"\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterAdmin",
-											"protocol": "https",
-											"host": [
-												"userservice-uat",
-												"azurewebsites",
-												"net"
-											],
-											"path": [
-												"Register",
-												"RegisterAdmin"
-											]
-										}
-									},
-									"response": []
 								}
 							]
-						},
-						{
-							"name": "Negative Tests",
-							"item": []
 						}
 					]
 				},
