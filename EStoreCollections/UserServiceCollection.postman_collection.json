@@ -3606,6 +3606,1497 @@
 											}
 										}
 									]
+								},
+								{
+									"name": "TC53_8a Register admin with invalid password",
+									"item": [
+										{
+											"name": "1. Get valid admin token",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 200\", function () {\r",
+															"    pm.response.to.be.ok;\r",
+															"});\r",
+															"pm.environment.set(\"adminToken\", pm.response.text());"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "",
+														"value": "",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"email\": \"{{adminEmail}}\",\r\n  \"password\": \"{{adminPassword}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Authentication/Login",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Authentication",
+														"Login"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "2a. Password is less than 4 characters",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 400\", function () {\r",
+															"    pm.response.to.be.badRequest;\r",
+															"});\r",
+															"pm.test(\"Check if response contains the error message: 'Password must be at least 4 characters, no more than 32 characters, and must include at least one upper case letter, one lower case letter, and one numeric digit.'\", function () {\r",
+															"    var responseBody = pm.response.json();\r",
+															"    var errorMessage = responseBody.errors.Password[0];\r",
+															"    pm.expect(errorMessage).to.include(\"Password must be at least 4 characters, no more than 32 characters, and must include at least one upper case letter, one lower case letter, and one numeric digit.\");\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"password\": \"Qq1\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterCustomer",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterCustomer"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "2b. Password without lowwer case",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 400\", function () {\r",
+															"    pm.response.to.be.badRequest;\r",
+															"});\r",
+															"pm.test(\"Check if response contains the error message: 'Password must be at least 4 characters, no more than 32 characters, and must include at least one upper case letter, one lower case letter, and one numeric digit.'\", function () {\r",
+															"    var responseBody = pm.response.json();\r",
+															"    var errorMessage = responseBody.errors.Password[0];\r",
+															"    pm.expect(errorMessage).to.include(\"Password must be at least 4 characters, no more than 32 characters, and must include at least one upper case letter, one lower case letter, and one numeric digit.\");\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{adminToken}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"password\": \"QQ123\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterAdmin",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterAdmin"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "2c. Password without upper case",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 400\", function () {\r",
+															"    pm.response.to.be.badRequest;\r",
+															"});\r",
+															"pm.test(\"Check if response contains the error message: 'Password must be at least 4 characters, no more than 32 characters, and must include at least one upper case letter, one lower case letter, and one numeric digit.'\", function () {\r",
+															"    var responseBody = pm.response.json();\r",
+															"    var errorMessage = responseBody.errors.Password[0];\r",
+															"    pm.expect(errorMessage).to.include(\"Password must be at least 4 characters, no more than 32 characters, and must include at least one upper case letter, one lower case letter, and one numeric digit.\");\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{adminToken}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"password\": \"qq123\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterAdmin",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterAdmin"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "2d. Password without digits",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 400\", function () {\r",
+															"    pm.response.to.be.badRequest;\r",
+															"});\r",
+															"pm.test(\"Check if response contains the error message: 'Password must be at least 4 characters, no more than 32 characters, and must include at least one upper case letter, one lower case letter, and one numeric digit.'\", function () {\r",
+															"    var responseBody = pm.response.json();\r",
+															"    var errorMessage = responseBody.errors.Password[0];\r",
+															"    pm.expect(errorMessage).to.include(\"Password must be at least 4 characters, no more than 32 characters, and must include at least one upper case letter, one lower case letter, and one numeric digit.\");\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{adminToken}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"password\": \"qqQQwE\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterAdmin",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterAdmin"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "2e. Password is more than 32 characters",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 400\", function () {\r",
+															"    pm.response.to.be.badRequest;\r",
+															"});\r",
+															"pm.test(\"Check if response contains the error message: 'Password must be at least 4 characters, no more than 32 characters, and must include at least one upper case letter, one lower case letter, and one numeric digit.'\", function () {\r",
+															"    var responseBody = pm.response.json();\r",
+															"    var errorMessage = responseBody.errors.Password[0];\r",
+															"    pm.expect(errorMessage).to.include(\"Password must be at least 4 characters, no more than 32 characters, and must include at least one upper case letter, one lower case letter, and one numeric digit.\");\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{adminToken}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"password\": \"Gqo78PyyKsz9rqiR1SgmM7bVMbxGwwJIM\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterAdmin",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterAdmin"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													""
+												]
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													""
+												]
+											}
+										}
+									]
+								},
+								{
+									"name": "TC53_8b_11 Register customer with invalid password",
+									"item": [
+										{
+											"name": "1. Get valid admin token",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 200\", function () {\r",
+															"    pm.response.to.be.ok;\r",
+															"});\r",
+															"pm.environment.set(\"adminToken\", pm.response.text());"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "",
+														"value": "",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"email\": \"{{adminEmail}}\",\r\n  \"password\": \"{{adminPassword}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Authentication/Login",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Authentication",
+														"Login"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "2a. Password is empty string",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 400\", function () {\r",
+															"    pm.response.to.be.badRequest;\r",
+															"});\r",
+															"pm.test(\"Check if response contains the error message: 'Password is required.'\", function () {\r",
+															"    var responseBody = pm.response.json();\r",
+															"    var errorMessage = responseBody.errors.Password[0];\r",
+															"    pm.expect(errorMessage).to.include(\"Password is required.\");\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{adminToken}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"password\": \"{{emptyString}}\",\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterAdmin",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterAdmin"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "2b. Password is null",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 400\", function () {\r",
+															"    pm.response.to.be.badRequest;\r",
+															"});\r",
+															"pm.test(\"Check if response contains the error message: 'Password is required.'\", function () {\r",
+															"    var responseBody = pm.response.json();\r",
+															"    var errorMessage = responseBody.errors.Password[0];\r",
+															"    pm.expect(errorMessage).to.include(\"Password is required.\");\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{adminToken}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"password\": null,\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterAdmin",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterAdmin"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "2c. Password is not provided",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 400\", function () {\r",
+															"    pm.response.to.be.badRequest;\r",
+															"});\r",
+															"pm.test(\"Check if response contains the error message: 'Password is required.'\", function () {\r",
+															"    var responseBody = pm.response.json();\r",
+															"    var errorMessage = responseBody.errors.Password[0];\r",
+															"    pm.expect(errorMessage).to.include(\"Password is required.\");\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{adminToken}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"email\": \"{{$randomEmail}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterAdmin",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterAdmin"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													""
+												]
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													""
+												]
+											}
+										}
+									]
+								},
+								{
+									"name": "TC53_9a Register admin with invalid email",
+									"item": [
+										{
+											"name": "1. Get valid admin token",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 200\", function () {\r",
+															"    pm.response.to.be.ok;\r",
+															"});\r",
+															"pm.environment.set(\"adminToken\", pm.response.text());"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "",
+														"value": "",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"email\": \"{{adminEmail}}\",\r\n  \"password\": \"{{adminPassword}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Authentication/Login",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Authentication",
+														"Login"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "2a. Email  is @example.com",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 400\", function () {\r",
+															"    pm.response.to.be.badRequest;\r",
+															"});\r",
+															"pm.test(\"Response contains message: 'Invalid email format.'\", function () {\r",
+															"    var responseBody = pm.response.json();\r",
+															"    var errorMessage = responseBody.errors.Email[0];\r",
+															"    pm.expect(errorMessage).to.include(\"Invalid email format.\");\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{adminToken}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"@example.com\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterAdmin",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterAdmin"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "2b. Email  is user@.com",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 400\", function () {\r",
+															"    pm.response.to.be.badRequest;\r",
+															"});\r",
+															"pm.test(\"Response contains message: 'Invalid email format.'\", function () {\r",
+															"    var responseBody = pm.response.json();\r",
+															"    var errorMessage = responseBody.errors.Email[0];\r",
+															"    pm.expect(errorMessage).to.include(\"Invalid email format.\");\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{adminToken}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"user@.com\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterAdmin",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterAdmin"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "2c. Email  is user@@example.com",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 400\", function () {\r",
+															"    pm.response.to.be.badRequest;\r",
+															"});\r",
+															"pm.test(\"Response contains message: 'Invalid email format.'\", function () {\r",
+															"    var responseBody = pm.response.json();\r",
+															"    var errorMessage = responseBody.errors.Email[0];\r",
+															"    pm.expect(errorMessage).to.include(\"Invalid email format.\");\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{adminToken}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"user@@example.com\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterAdmin",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterAdmin"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "2d. Email  is user@example.c",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 400\", function () {\r",
+															"    pm.response.to.be.badRequest;\r",
+															"});\r",
+															"pm.test(\"Response contains message: 'Invalid email format.'\", function () {\r",
+															"    var responseBody = pm.response.json();\r",
+															"    var errorMessage = responseBody.errors.Email[0];\r",
+															"    pm.expect(errorMessage).to.include(\"Invalid email format.\");\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{adminToken}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"user@example.c\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterAdmin",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterAdmin"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "2e. Email  is user@example..co",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 400\", function () {\r",
+															"    pm.response.to.be.badRequest;\r",
+															"});\r",
+															"pm.test(\"Response contains message: 'Invalid email format.'\", function () {\r",
+															"    var responseBody = pm.response.json();\r",
+															"    var errorMessage = responseBody.errors.Email[0];\r",
+															"    pm.expect(errorMessage).to.include(\"Invalid email format.\");\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{adminToken}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"birthDate\": \"12.12.2000\",\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"user@example..co\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterAdmin",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterAdmin"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "2f. Email  is user@.example.com",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 400\", function () {\r",
+															"    pm.response.to.be.badRequest;\r",
+															"});\r",
+															"pm.test(\"Response contains message: 'Invalid email format.'\", function () {\r",
+															"    var responseBody = pm.response.json();\r",
+															"    var errorMessage = responseBody.errors.Email[0];\r",
+															"    pm.expect(errorMessage).to.include(\"Invalid email format.\");\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{adminToken}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"user@.example.com\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterAdmin",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterAdmin"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "2g. Email  is user@example",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 400\", function () {\r",
+															"    pm.response.to.be.badRequest;\r",
+															"});\r",
+															"pm.test(\"Response contains message: 'Invalid email format.'\", function () {\r",
+															"    var responseBody = pm.response.json();\r",
+															"    var errorMessage = responseBody.errors.Email[0];\r",
+															"    pm.expect(errorMessage).to.include(\"Invalid email format.\");\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{adminToken}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"user@example\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterAdmin",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterAdmin"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "2h. Email  is user.com",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 400\", function () {\r",
+															"    pm.response.to.be.badRequest;\r",
+															"});\r",
+															"pm.test(\"Response contains message: 'Invalid email format.'\", function () {\r",
+															"    var responseBody = pm.response.json();\r",
+															"    var errorMessage = responseBody.errors.Email[0];\r",
+															"    pm.expect(errorMessage).to.include(\"Invalid email format.\");\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{adminToken}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"user.com\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterAdmin",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterAdmin"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													""
+												]
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													""
+												]
+											}
+										}
+									]
+								},
+								{
+									"name": "TC53_9b_12 Register admin with invalid email",
+									"item": [
+										{
+											"name": "1. Get valid admin token Copy",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 200\", function () {\r",
+															"    pm.response.to.be.ok;\r",
+															"});\r",
+															"pm.environment.set(\"adminToken\", pm.response.text());"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "",
+														"value": "",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"email\": \"{{adminEmail}}\",\r\n  \"password\": \"{{adminPassword}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Authentication/Login",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Authentication",
+														"Login"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "2a. Email is not provided",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 400\", function () {\r",
+															"    pm.response.to.be.badRequest;\r",
+															"});\r",
+															"pm.test(\"Response contains message: 'Email is required.'\", function () {\r",
+															"    var responseBody = pm.response.json();\r",
+															"    var errorMessage = responseBody.errors.Email[0];\r",
+															"    pm.expect(errorMessage).to.include(\"Email is required.\");\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{adminToken}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"password\": \"qweR1\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterAdmin",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterAdmin"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "2b. Email  is null",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 400\", function () {\r",
+															"    pm.response.to.be.badRequest;\r",
+															"});\r",
+															"pm.test(\"Response contains message: 'Email is required.'\", function () {\r",
+															"    var responseBody = pm.response.json();\r",
+															"    var errorMessage = responseBody.errors.Email[0];\r",
+															"    pm.expect(errorMessage).to.include(\"Email is required.\");\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{adminToken}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"password\": \"qweR1\",\r\n  \"email\": null\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterAdmin",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterAdmin"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "2c. Email  is empty string",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 400\", function () {\r",
+															"    pm.response.to.be.badRequest;\r",
+															"});\r",
+															"pm.test(\"Response contains message: 'Email is required.'\", function () {\r",
+															"    var responseBody = pm.response.json();\r",
+															"    var errorMessage = responseBody.errors.Email[0];\r",
+															"    pm.expect(errorMessage).to.include(\"Email is required.\");\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{adminToken}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"password\": \"qweR1\",\r\n  \"email\": \"{{emptyString}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://userservice-uat.azurewebsites.net/Register/RegisterAdmin",
+													"protocol": "https",
+													"host": [
+														"userservice-uat",
+														"azurewebsites",
+														"net"
+													],
+													"path": [
+														"Register",
+														"RegisterAdmin"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													""
+												]
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													""
+												]
+											}
+										}
+									]
 								}
 							]
 						}
